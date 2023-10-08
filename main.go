@@ -1,6 +1,7 @@
 package main
 
 import (
+	mail "cinemy-auth-api/communication"
 	"cinemy-auth-api/handlers/authHandler"
 	"cinemy-auth-api/middlewares/guards"
 	"net/http"
@@ -20,11 +21,13 @@ func buildRouter() *gin.Engine {
 		context.JSON(http.StatusOK, gin.H{ "message": "Welcome" })
 	})
 	apiPrivate.GET("/", func(context *gin.Context){
+		mail.SendMailConfirmRegister("agnos.goncalves@gmail.com")
 		context.JSON(http.StatusOK, gin.H{ "message": "Test Access" })
 	})
 	
 	apiAuth.POST("/login", authHandler.Login)
 	apiAuth.POST("/register", authHandler.Register)
+	apiAuth.PUT("/register/confirm", authHandler.ConfirmRegister)
 	return router
 }
 

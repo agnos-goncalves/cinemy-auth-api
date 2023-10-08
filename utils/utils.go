@@ -42,3 +42,25 @@ func GenerateJWT(claims jwt.MapClaims) (string, error) {
 
 	return signedToken, err
 }
+
+func DecodeJWT(tokenString string) (map[string]interface{}, error) {
+	secretKey := []byte("your-secret-key")
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return secretKey, nil
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	if !token.Valid {
+		return nil, errors.New("invalid token")
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return nil, errors.New("not getting claims")
+	}
+
+	return claims, nil
+}
