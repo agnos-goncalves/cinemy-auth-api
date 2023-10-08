@@ -22,6 +22,12 @@ type ConfirmRegisterDTO struct {
 	Token string `json:token`
 }
 
+type PasswordChangeDTO struct {
+	Email string `json:token`
+	CurrentPass string `json:token`
+	NewPass string `json:token`
+}
+
 func Register(context *gin.Context){
 	var requestData RegisterRequestDTO
 
@@ -78,6 +84,21 @@ func ConfirmRegister(context *gin.Context){
 	context.JSON(http.StatusOK, user)
 }
 
+func PasswordChange(context *gin.Context) { 
+
+	var requestData PasswordChangeDTO
+
+	if err:= context.ShouldBindJSON(&requestData); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	_,err := userService.PasswordChange(requestData.Email, requestData.CurrentPass, requestData.NewPass)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	context.JSON(http.StatusOK, gin.H{"message": "password changed"})
+}
 
 
 

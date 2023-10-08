@@ -28,6 +28,7 @@ func buildRouter() *gin.Engine {
 	apiAuth.POST("/login", authHandler.Login)
 	apiAuth.POST("/register", authHandler.Register)
 	apiAuth.PUT("/register/confirm", authHandler.ConfirmRegister)
+	apiAuth.PUT("/register/password-change", authHandler.ConfirmRegister)
 	return router
 }
 

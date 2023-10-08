@@ -44,3 +44,15 @@ func UpdateActive(email string) (bool, error) {
 	return true, err;
 }
 
+func UpdatePassword(email string, pass string) (bool, error) {
+	conn := db.Connect()
+	query := "UPDATE users SET password = ? WHERE email = ?"
+	_, err := conn.DB.Exec(query, pass, email)
+	defer conn.DB.Close()
+
+	if err != nil {
+		return false, err;
+	}
+	return true, err;
+}
+

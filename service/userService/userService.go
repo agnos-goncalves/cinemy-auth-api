@@ -60,3 +60,17 @@ func Active(token string)(bool, error) {
 	
 	return true, nil
 }
+
+func PasswordChange(email string, currentPass string, newPass string)(bool, error) {
+	user, err:= userRepository.SelectByEmail(email)
+	if err != nil {
+		return false, err
+	}
+	if err := utils.CompareHashAndPassword(currentPass, user.Password); err != nil {
+		return false, err
+	}
+	if _, err := userRepository.UpdatePassword(user.Email, newPass); err != nil {
+		return false, err
+	}
+	return true, nil
+}
