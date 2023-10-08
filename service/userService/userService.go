@@ -69,7 +69,13 @@ func PasswordChange(email string, currentPass string, newPass string)(bool, erro
 	if err := utils.CompareHashAndPassword(currentPass, user.Password); err != nil {
 		return false, err
 	}
-	if _, err := userRepository.UpdatePassword(user.Email, newPass); err != nil {
+
+	hashedPassword, err := utils.GenerateFromPassword(newPass);
+	if err != nil {
+		return false, err
+	}
+	
+	if _, err := userRepository.UpdatePassword(user.Email, hashedPassword); err != nil {
 		return false, err
 	}
 	return true, nil

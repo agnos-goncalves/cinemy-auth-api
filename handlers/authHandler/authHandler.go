@@ -19,13 +19,13 @@ type LoginRequestDTO struct {
 }
 
 type ConfirmRegisterDTO struct {
-	Token string `json:token`
+	Token string `json:"token"`
 }
 
 type PasswordChangeDTO struct {
-	Email string `json:token`
-	CurrentPass string `json:token`
-	NewPass string `json:token`
+	Email       string `json:"email"`
+	CurrentPass string `json:"current_password"`
+	NewPass     string `json:"new_password"`
 }
 
 func Register(context *gin.Context){
