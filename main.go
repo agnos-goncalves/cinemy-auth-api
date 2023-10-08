@@ -1,7 +1,8 @@
 package main
 
 import (
-	"cinemy-auth-api/handlers"
+	"cinemy-auth-api/handlers/authHandler"
+	"cinemy-auth-api/middlewares/guards"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -13,7 +14,7 @@ func buildRouter() *gin.Engine {
 	apiAuth := api.Group("/auth")
 	apiPrivate := api.Group("/private")
 	
-	apiPrivate.Use(handlers.GuardAuth)
+	apiPrivate.Use(guards.Auth)
 	
 	api.GET("/", func(context *gin.Context){
 		context.JSON(http.StatusOK, gin.H{ "message": "Welcome" })
@@ -22,8 +23,8 @@ func buildRouter() *gin.Engine {
 		context.JSON(http.StatusOK, gin.H{ "message": "Test Access" })
 	})
 	
-	apiAuth.POST("/login", handlers.LoginHandler)
-	apiAuth.POST("/register", handlers.RegisterHandler)
+	apiAuth.POST("/login", authHandler.Login)
+	apiAuth.POST("/register", authHandler.Register)
 	return router
 }
 
